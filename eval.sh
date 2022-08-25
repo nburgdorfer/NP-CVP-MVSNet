@@ -1,4 +1,4 @@
-DATASET_ROOT="./dataset/dtu-ours-hires-test-1200/"
+DATASET_ROOT="/media/nate/Data/DTU/"
 
 # Task name
 TASK_NAME="np-cvp-mvsnet"

@@ -1,7 +1,7 @@
 set -x; set -e;
 
 TASK_NAME="np-cvp-mvsnet"
-DTU_HIGHRES_TRAIN_PATH="dataset/dtu-ours-hires-train-512/"
+DTU_HIGHRES_TRAIN_PATH="/media/nate/Data/DTU/"
 
 CKPT_DIR="./ckpts/"
 mkdir -p $CKPT_DIR
