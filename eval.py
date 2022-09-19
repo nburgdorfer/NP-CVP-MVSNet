@@ -49,7 +49,7 @@ print(settings_str)
 def save_depth():
     # dataset, dataloader
     test_dataset = chosen_dataset.MVSDataset(args)
-    test_loader = DataLoader(test_dataset, args.batch_size, shuffle=args.eval_shuffle, num_workers=32, drop_last=False)
+    test_loader = DataLoader(test_dataset, args.batch_size, shuffle=args.eval_shuffle, num_workers=12, drop_last=False)
 
     # model
     model = net.network(args)

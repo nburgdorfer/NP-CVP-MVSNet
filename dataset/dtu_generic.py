@@ -18,7 +18,8 @@ class MVSDataset(Dataset):
 
         self.args = args
         self.data_root = self.args.dataset_root
-        self.scan_list_file = getScanListFile(self.data_root,self.args.mode)
+        #self.scan_list_file = getScanListFile(self.data_root,self.args.mode)
+        self.scan_list_file = self.args.scan_list
         self.pair_list_file = getPairListFile(self.data_root,self.args.mode,self.args.vselection)
         print("Initiating dataloader for pre-processed DTU dataset.")
         print("Using dataset:"+self.data_root+self.args.mode+"/")

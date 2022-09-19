@@ -109,7 +109,13 @@ def read_cam_file_with_size(filename,imgsize):
         lines = [line.rstrip() for line in lines]
     extrinsics = np.fromstring(' '.join(lines[1:5]), dtype=np.float32, sep=' ').reshape((4, 4))
     intrinsics = np.fromstring(' '.join(lines[7:10]), dtype=np.float32, sep=' ').reshape((3, 3))
-    if imgsize != 1200:
+
+    if imgsize == 1200:
+        intrinsics[1,2] -= 24
+    elif imgsize == 1080:
+        intrinsics[1,2] -= 28
+
+    else:
         if imgsize not in [128,256,512,1024]:
             intrinsice_down_factor = 1200/imgsize
             intrinsics[:2, :] /= intrinsice_down_factor
@@ -136,7 +142,7 @@ def write_cam(filename, intrinsic, extrinsic, depth_min, depth_max):
 def read_img_with_size(filename,imgsize):
     img = Image.open(filename)
 
-    if imgsize != 1200: # input image does not match image size we want
+    if imgsize != 1200 and imgsize != 1080: # input image does not match image size we want
         if imgsize in [128,256,512,1024]:
             new_size = [int(imgsize*(5/4)),imgsize]
             img = img.resize((new_size),Image.BILINEAR)
@@ -148,7 +154,10 @@ def read_img_with_size(filename,imgsize):
     img = np.array(img, dtype=np.float32) / 255.
 
     if img.shape[0] == 1200:
-        img = img[:1152,:,:]
+        img = img[24:1176,:,:]
+
+    if img.shape[0] == 1080:
+        img = img[28:1052,:,:]
 
     if img.shape[0] == 600:
         img = img[:592,:,:]
