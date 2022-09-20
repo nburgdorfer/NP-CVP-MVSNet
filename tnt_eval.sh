@@ -1,4 +1,4 @@
-DATASET_ROOT="/media/nate/Data/TNT/training/"
+DATASET_ROOT="/media/nate/Data/TNT/intermediate/"
 
 # Task name
 CKPT_DIR=/media/nate/Data/MVS/NP-CVP-MVSNet/dtu/models/
@@ -8,7 +8,7 @@ CKPT_NAME="model_000006.ckpt"
 LOAD_CKPT_DIR="${CKPT_DIR}${CKPT_NAME}"
 
 # Output dir
-OUT_DIR=/media/nate/Data/Results/NP-CVP-MVSNet/tnt/Output/
+OUT_DIR=/media/nate/Data/Results/NP-CVP-MVSNet/tnt/Output_intermediate/
 
 CUDA_VISIBLE_DEVICES=0 python eval.py \
 \
@@ -17,7 +17,7 @@ CUDA_VISIBLE_DEVICES=0 python eval.py \
 \
 --dataset="tanks" \
 --dataset_root=$DATASET_ROOT \
---scan_list=./dataset/tnt/training_list.txt \
+--scan_list=./dataset/tnt/intermediate_list.txt \
 --imgsize=1080 \
 --depth_h=1056 \
 --depth_w=1920 \
