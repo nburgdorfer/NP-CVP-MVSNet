@@ -13,7 +13,7 @@ def getArgsParser():
     # General settings
     parser.add_argument('--info', default='None', help='Info about current run')
     parser.add_argument('--mode', default='train', help='train or test ro validation', choices=['train', 'test', 'val'])
-    parser.add_argument('--scan_list', default='./scan_list.txt', help='Data scan list')
+    parser.add_argument('--scene_list', default='./scan_list.txt', help='Data scan list')
     
     # Data settings
     parser.add_argument('--dataset', default='dtu', help='select datareader')

@@ -136,10 +136,13 @@ def write_img(filename,image):
     image.save(filename)
     return 1
 
-def mvsnet_to_gipuma(scan_folder, scan, dtu_test_root, gipuma_point_folder,image_height):
+def mvsnet_to_gipuma(scan_folder, scan, dtu_test_root, gipuma_point_folder,image_height, dataset):
     
-    image_folder = os.path.join(dtu_test_root, 'Rectified', scan)
-    cam_folder = os.path.join(dtu_test_root, 'Cameras')
+    image_folder = os.path.join(dtu_test_root, 'Images', scan)
+    if (dataset == "dtu"):
+        cam_folder = os.path.join(dtu_test_root, 'Cameras')
+    elif (dataset == "tnt"):
+        cam_folder = os.path.join(dtu_test_root, 'Cameras', scan)
     depth_folder = os.path.join(scan_folder, 'depth_est')
 
     gipuma_cam_folder = os.path.join(gipuma_point_folder, 'cams')
@@ -159,7 +162,10 @@ def mvsnet_to_gipuma(scan_folder, scan, dtu_test_root, gipuma_point_folder,image
 
     # copy images to gipuma image folder    
     for view in range(0,49):
-        in_image_file = os.path.join(image_folder, "rect_{:03d}_3_r5000.png".format(view+1))# Our image start from 1
+        if (dataset == "dtu"):
+            in_image_file = os.path.join(image_folder, "lighting/{:08d}_3.png".format(view))# Our image start from 1
+        elif (dataset == "tnt"):
+            in_image_file = os.path.join(image_folder, "{:08d}.png".format(view))# Our image start from 1
         out_image_file = os.path.join(gipuma_image_folder, "{:08d}.png".format(view))
         if image_height == 1200:
             shutil.copy(in_image_file, out_image_file)
@@ -222,8 +228,10 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--dtu_test_root', type=str, default = '')
     parser.add_argument('--depth_folder', type=str, default = '')
+    parser.add_argument('--scene', type=str, default = '')
     parser.add_argument('--out_folder', type=str, default = '')
     parser.add_argument('--fusibile_exe_path', type=str, default = './fusibile')
+    parser.add_argument('--dataset', type=str, default = 'dtu')
     parser.add_argument('--prob_threshold', type=float, default = '0.8')
     parser.add_argument('--disp_threshold', type=float, default = '0.13')
     parser.add_argument('--num_consistent', type=float, default = '3')
@@ -238,33 +246,33 @@ if __name__ == '__main__':
     disp_threshold = args.disp_threshold
     num_consistent = args.num_consistent
     image_height = args.image_height
+    dataset = args.dataset
+    scan = args.scene
 
     # Read test list
-    testlist = "./scan_list_test.txt"
-    with open(testlist) as f:
-        scans = f.readlines()
-        scans = [line.rstrip() for line in scans]
+    #   testlist = args.scene_list
+    #   with open(testlist) as f:
+    #       scans = f.readlines()
+    #       scans = [line.rstrip() for line in scans]
 
     # Fusion
-    for scan in scans:
+    scan_folder = os.path.join(depth_folder, scan)
+    fusibile_workspace = os.path.join(depth_folder, out_folder, scan)
 
-        scan_folder = os.path.join(depth_folder, scan)
-        fusibile_workspace = os.path.join(depth_folder, out_folder, scan)
+    if not os.path.isdir(os.path.join(depth_folder, out_folder)):
+        os.mkdir(os.path.join(depth_folder, out_folder))
 
-        if not os.path.isdir(os.path.join(depth_folder, out_folder)):
-            os.mkdir(os.path.join(depth_folder, out_folder))
+    if not os.path.isdir(fusibile_workspace):
+        os.mkdir(fusibile_workspace)
 
-        if not os.path.isdir(fusibile_workspace):
-            os.mkdir(fusibile_workspace)
+    # probability filtering
+    print ('filter depth map with probability map')
+    probability_filter(scan_folder, prob_threshold)
 
-        # probability filtering
-        print ('filter depth map with probability map')
-        probability_filter(scan_folder, prob_threshold)
+    # convert to gipuma format
+    print ('Convert mvsnet output to gipuma input')
+    mvsnet_to_gipuma(scan_folder, scan, dtu_test_root, fusibile_workspace, image_height, dataset)
 
-        # convert to gipuma format
-        print ('Convert mvsnet output to gipuma input')
-        mvsnet_to_gipuma(scan_folder, scan, dtu_test_root, fusibile_workspace, image_height)
-
-        # depth map fusion with gipuma 
-        print ('Run depth map fusion & filter')
-        depth_map_fusion(fusibile_workspace, fusibile_exe_path, disp_threshold, num_consistent)
+    # depth map fusion with gipuma 
+    print ('Run depth map fusion & filter')
+    depth_map_fusion(fusibile_workspace, fusibile_exe_path, disp_threshold, num_consistent)
