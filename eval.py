@@ -20,6 +20,7 @@ from PIL import Image
 from argsParser import getArgsParser
 from multiprocessing import Pool
 from multiprocessing import cpu_count
+import cv2
 
 
 cudnn.benchmark = True
@@ -157,21 +158,59 @@ def save_depth():
                 # save depth maps and confidence maps
                 depth_filename = os.path.join(args.outdir, filename.format('depth_est', '.pfm'))
                 confidence_filename = os.path.join(args.outdir, filename.format('confidence', '.pfm'))
+                cam_filename = os.path.join(args.outdir, filename.format('cam', '.txt'))
+                img_filename = os.path.join(args.outdir, filename.format('img', '.png'))
+
                 os.makedirs(depth_filename.rsplit('/', 1)[0], exist_ok=True)
                 os.makedirs(confidence_filename.rsplit('/', 1)[0], exist_ok=True)
+                os.makedirs(cam_filename.rsplit('/', 1)[0], exist_ok=True)
+                os.makedirs(img_filename.rsplit('/', 1)[0], exist_ok=True)
+
                 # save depth maps
                 save_pfm(depth_filename, final_depth[sample_idx])
                 write_depth_img(depth_filename+".png", final_depth[sample_idx])
+
                 # Save prob maps
                 save_pfm(confidence_filename, max_sum4_prob[sample_idx].squeeze().data.cpu().numpy())
                 write_depth_img(confidence_filename+".png", max_sum4_prob[sample_idx].squeeze().data.cpu().numpy())
+
+                write_cam(cam_filename, sample_cuda["ref_intrinsics"].squeeze().data.cpu().numpy(), sample_cuda["ref_extrinsics"].squeeze().data.cpu().numpy(), sample_cuda["depth_min"], sample_cuda["depth_max"])
+                img = np.moveaxis(sample_cuda["ref_img"].detach().cpu().numpy().squeeze(),0,2)*255
+                img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+                cv2.imwrite(img_filename, img)
 
             del sample
             del outputs
             torch.cuda.empty_cache()
 
-def save_pfm(filename, image, scale=1):
+def write_cam(filename, intrinsic, extrinsic, depth_min, depth_max):
+    with open(filename, 'w') as f:
+        f.write('extrinsic\n')
+        for j in range(4):
+            for k in range(4):
+                f.write(str(extrinsic[j, k]) + ' ')
+            f.write('\n')
+        f.write('\nintrinsic\n')
+        for j in range(3):
+            for k in range(3):
+                f.write(str(intrinsic[j, k]) + ' ')
+            f.write('\n')
+        depth_interval = (depth_max-depth_min)/256
+        f.write('\n%f %f %f %f\n' % (depth_min,depth_interval,256,depth_max))
 
+def write_img(filename,image):
+
+    if not os.path.exists(os.path.dirname(filename)):
+        try:
+            os.makedirs(os.path.dirname(filename))
+        except OSError as exc: # Guard against race condition
+            if exc.errno != errno.EEXIST:
+                raise
+
+    image.save(filename)
+    return 1
+
+def save_pfm(filename, image, scale=1):
     if not os.path.exists(os.path.dirname(filename)):
         try:
             os.makedirs(os.path.dirname(filename))

@@ -1,10 +1,12 @@
 #!/bin/bash
 
-TNT_TEST_ROOT="/media/nate/Data/TNT/training/"
-DEPTH_FOLDER="/media/nate/Data/Results/NP-CVP-MVSNet/tnt/Output/"
-OUT_FOLDER="/media/nate/Data/Results/NP-CVP-MVSNet/tnt/Output_fused/"
+DATASET=intermediate
+
+TNT_TEST_ROOT="/media/nate/Data/TNT/${DATASET}/"
+DEPTH_FOLDER="/media/nate/Data/Results/NP-CVP-MVSNet/tnt/Output_${DATASET}/"
+OUT_FOLDER="/media/nate/Data/Results/NP-CVP-MVSNet/tnt/Output_${DATASET}_fused/"
 FUSIBILE_EXE_PATH="./fusibile"
-SCENE_LIST=../dataset/tnt/training_list.txt
+SCENE_LIST=../dataset/tnt/${DATASET}_list.txt
 
 fusion() {
 	python depthfusion.py \
@@ -17,13 +19,17 @@ fusion() {
 	--prob_threshold=0.8 \
 	--disp_threshold=${2} \
 	--num_consistent=${3} \
-	--image_height=1024
+	--image_height=1080
 }
 
 
-SCENES=(Barn Caterpillar Church Courthouse Ignatius Meetingroom Truck)
-DISP_TH=(1.5 0.8 0.8 0.8 0.8 0.8 0.8)
-NUM_CONSIST=(3 3 3 3 3 3 3)
+#SCENES=(Barn Caterpillar Ignatius Truck)
+#DISP_TH=(1.5 0.8 0.8 0.8 0.8 0.8 0.8)
+#NUM_CONSIST=(3 3 3 3 3 3 3)
+
+SCENES=(Horse)
+DISP_TH=(0.5)
+NUM_CONSIST=(3)
 i=0
 
 for SCENE in ${SCENES[@]}

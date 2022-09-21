@@ -19,7 +19,7 @@ class MVSDataset(Dataset):
 
         self.args = args
         self.data_root = self.args.dataset_root
-        self.scan_list_file = self.args.scan_list
+        self.scene_list_file = self.args.scene_list
         print("Initiating dataloader for pre-processed DTU dataset.")
         print("Using dataset:"+self.data_root+self.args.mode+"/")
 
@@ -31,10 +31,10 @@ class MVSDataset(Dataset):
         metas = []
 
         # Read scan list
-        scan_list = readScanList(self.scan_list_file,self.args.mode)
+        scene_list = readScanList(self.scene_list_file,self.args.mode)
 
         # Read pairs list
-        for scan in scan_list:
+        for scan in scene_list:
             pair_list_file = getPairListFileTNT(self.data_root, self.args.mode, scan, self.args.vselection)
 
             with open(pair_list_file) as f:
