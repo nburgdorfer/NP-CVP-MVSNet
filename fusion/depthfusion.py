@@ -74,12 +74,10 @@ def mvsnet_to_gipuma_cam(in_path, out_path, image_height):
 
     extrinsic = cam[0:4][0:4][0]
     intrinsic = cam[0:4][0:4][1]
-    intrinsics_down_factor = 1200/image_height
-    intrinsic[:2,:] /= intrinsics_down_factor
     intrinsic[3][0] = 0
     intrinsic[3][1] = 0
     intrinsic[3][2] = 0
-    intrinsic[3][3] = 0
+    intrinsic[3][3] = 1
 
     projection_matrix = np.matmul(intrinsic, extrinsic)
     projection_matrix = projection_matrix[0:3][:]
@@ -117,11 +115,6 @@ def fake_gipuma_normal(in_depth_path, out_normal_path):
 
 def read_img_with_size(filename,imgsize):
     img = Image.open(filename)
-
-    if imgsize != 1200 or imgsize != 1080: # input image does not match image size we want
-        new_size = [int(float(imgsize)*(4.0/3.0)),imgsize]
-        img = img.resize((new_size),Image.BILINEAR)
-
     return img
 
 def write_img(filename,image):
@@ -138,10 +131,7 @@ def write_img(filename,image):
 
 def mvsnet_to_gipuma(scan_folder, scan, dtu_test_root, gipuma_point_folder,image_height,dataset, num_views):
     
-    if (dataset == "dtu"):
-        cam_folder = os.path.join(scan_folder, 'cam')
-    elif (dataset == "tnt"):
-        cam_folder = os.path.join(scan_folder, 'cam')
+    cam_folder = os.path.join(scan_folder, 'cam')
     depth_folder = os.path.join(scan_folder, 'depth_est')
     image_folder = os.path.join(scan_folder, 'img')
 
@@ -162,16 +152,9 @@ def mvsnet_to_gipuma(scan_folder, scan, dtu_test_root, gipuma_point_folder,image
 
     # copy images to gipuma image folder    
     for view in range(num_views):
-        if (dataset == "dtu"):
-            in_image_file = os.path.join(image_folder, "{:08d}.png".format(view))# Our image start from 1
-        elif (dataset == "tnt"):
-            in_image_file = os.path.join(image_folder, "{:08d}.png".format(view))# Our image start from 1
+        in_image_file = os.path.join(image_folder, "{:08d}.png".format(view))
         out_image_file = os.path.join(gipuma_image_folder, "{:08d}.png".format(view))
-        if image_height == 1200 or image_height == 1080:
-            shutil.copy(in_image_file, out_image_file)
-        else:
-            image = read_img_with_size(in_image_file,image_height)
-            write_img(out_image_file,image)
+        shutil.copy(in_image_file, out_image_file)
 
     # convert depth maps and fake normal maps
     gipuma_prefix = '2333__'
@@ -191,9 +174,9 @@ def probability_filter(scan_folder, prob_threshold, num_views):
     prob_folder = os.path.join(scan_folder, 'confidence')
 
     for view in range(num_views):
-        init_depth_map_path = os.path.join(depth_folder, "{:08d}.pfm".format(view)) # New dataset outputs depth start from 0.
-        prob_map_path = os.path.join(prob_folder, "{:08d}.pfm".format(view)) # Same as above
-        out_depth_map_path = os.path.join(depth_folder, "{:08d}_prob_filtered.pfm".format(view)) # Gipuma start from 0
+        init_depth_map_path = os.path.join(depth_folder, "{:08d}.pfm".format(view))
+        prob_map_path = os.path.join(prob_folder, "{:08d}.pfm".format(view))
+        out_depth_map_path = os.path.join(depth_folder, "{:08d}_prob_filtered.pfm".format(view))
 
         depth_map = load_pfm(open(init_depth_map_path))
         prob_map = load_pfm(open(prob_map_path))
@@ -264,7 +247,6 @@ if __name__ == '__main__':
 
     if not os.path.isdir(fusibile_workspace):
         os.mkdir(fusibile_workspace)
-
 
     num_views = len(os.listdir(os.path.join(scan_folder,"cam")))
     print("Number of views:", num_views)

@@ -1,10 +1,11 @@
 #!/bin/bash
 
-DATASET=training
+#DATASET=training
+DATASET=intermediate
 
-TNT_TEST_ROOT="/media/nate/Data/TNT/${DATASET}/"
-DEPTH_FOLDER="/media/nate/Data/Results/NP-CVP-MVSNet/tnt/Output_${DATASET}/"
-OUT_FOLDER="/media/nate/Data/Results/NP-CVP-MVSNet/tnt/Output_${DATASET}_fused/"
+TNT_TEST_ROOT="/media/Data/nate/TNT/${DATASET}/"
+DEPTH_FOLDER="/media/Data/nate/Results/NP-CVP-MVSNet/tnt/Output_${DATASET}/"
+OUT_FOLDER="/media/Data/nate/Results/NP-CVP-MVSNet/tnt/Output_${DATASET}_fused/"
 FUSIBILE_EXE_PATH="./fusibile"
 SCENE_LIST=../dataset/tnt/${DATASET}_list.txt
 
@@ -23,9 +24,13 @@ fusion() {
 }
 
 
-SCENES=(Ignatius Truck)
-DISP_TH=(0.5 0.5)
-NUM_CONSIST=(3 3)
+#	SCENES=(Barn Caterpillar Ignatius Truck)
+#	DISP_TH=(0.5 0.5 0.5 0.5)
+#	NUM_CONSIST=(3 3 3 3)
+
+SCENES=(Horse)
+DISP_TH=(25)
+NUM_CONSIST=(1)
 i=0
 
 for SCENE in ${SCENES[@]}
