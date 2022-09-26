@@ -181,6 +181,7 @@ def probability_filter(scan_folder, prob_threshold, num_views):
         depth_map = load_pfm(open(init_depth_map_path))
         prob_map = load_pfm(open(prob_map_path))
         depth_map[prob_map < prob_threshold] = 0
+        depth_map = np.asarray(depth_map)
         write_pfm(out_depth_map_path, depth_map)
 
 def depth_map_fusion(point_folder, fusibile_exe_path, disp_thresh, num_consistent):

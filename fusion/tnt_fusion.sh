@@ -30,7 +30,7 @@ fusion() {
 
 SCENES=(Horse)
 DISP_TH=(25)
-NUM_CONSIST=(1)
+NUM_CONSIST=(0)
 i=0
 
 for SCENE in ${SCENES[@]}
