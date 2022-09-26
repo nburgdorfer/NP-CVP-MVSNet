@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DATASET=intermediate
+DATASET=training
 
 TNT_TEST_ROOT="/media/nate/Data/TNT/${DATASET}/"
 DEPTH_FOLDER="/media/nate/Data/Results/NP-CVP-MVSNet/tnt/Output_${DATASET}/"
@@ -23,13 +23,9 @@ fusion() {
 }
 
 
-#SCENES=(Barn Caterpillar Ignatius Truck)
-#DISP_TH=(1.5 0.8 0.8 0.8 0.8 0.8 0.8)
-#NUM_CONSIST=(3 3 3 3 3 3 3)
-
-SCENES=(Horse)
-DISP_TH=(0.5)
-NUM_CONSIST=(3)
+SCENES=(Ignatius Truck)
+DISP_TH=(0.5 0.5)
+NUM_CONSIST=(3 3)
 i=0
 
 for SCENE in ${SCENES[@]}

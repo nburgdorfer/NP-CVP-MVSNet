@@ -139,7 +139,7 @@ def write_img(filename,image):
 def mvsnet_to_gipuma(scan_folder, scan, dtu_test_root, gipuma_point_folder,image_height,dataset, num_views):
     
     if (dataset == "dtu"):
-        cam_folder = os.path.join(dtu_test_root, 'Cameras')
+        cam_folder = os.path.join(scan_folder, 'cam')
     elif (dataset == "tnt"):
         cam_folder = os.path.join(scan_folder, 'cam')
     depth_folder = os.path.join(scan_folder, 'depth_est')
@@ -163,7 +163,7 @@ def mvsnet_to_gipuma(scan_folder, scan, dtu_test_root, gipuma_point_folder,image
     # copy images to gipuma image folder    
     for view in range(num_views):
         if (dataset == "dtu"):
-            in_image_file = os.path.join(image_folder, "lighting/{:08d}_3.png".format(view))# Our image start from 1
+            in_image_file = os.path.join(image_folder, "{:08d}.png".format(view))# Our image start from 1
         elif (dataset == "tnt"):
             in_image_file = os.path.join(image_folder, "{:08d}.png".format(view))# Our image start from 1
         out_image_file = os.path.join(gipuma_image_folder, "{:08d}.png".format(view))

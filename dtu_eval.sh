@@ -17,7 +17,7 @@ CUDA_VISIBLE_DEVICES=0 python eval.py \
 \
 --dataset="dtu" \
 --dataset_root=$DATASET_ROOT \
---scan_list=./dataset/dtu/scan_list_all.txt \
+--scene_list=./dataset/dtu/scan_list_all.txt \
 --imgsize=1200 \
 --depth_h=1152 \
 --depth_w=1600 \
