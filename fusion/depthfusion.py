@@ -62,7 +62,7 @@ def write_gipuma_dmb(path, image):
 def mvsnet_to_gipuma_dmb(in_path, out_path):
     '''convert mvsnet .pfm output to Gipuma .dmb format'''
     
-    image = load_pfm(open(in_path))
+    image = read_pfm(in_path)
     write_gipuma_dmb(out_path, image)
 
     return 
@@ -178,8 +178,8 @@ def probability_filter(scan_folder, prob_threshold, num_views):
         prob_map_path = os.path.join(prob_folder, "{:08d}.pfm".format(view))
         out_depth_map_path = os.path.join(depth_folder, "{:08d}_prob_filtered.pfm".format(view))
 
-        depth_map = load_pfm(open(init_depth_map_path))
-        prob_map = load_pfm(open(prob_map_path))
+        depth_map = read_pfm(init_depth_map_path)
+        prob_map = read_pfm(prob_map_path)
         depth_map[prob_map < prob_threshold] = 0
         depth_map = np.asarray(depth_map)
         write_pfm(out_depth_map_path, depth_map)
@@ -250,6 +250,8 @@ if __name__ == '__main__':
         os.mkdir(fusibile_workspace)
 
     num_views = len(os.listdir(os.path.join(scan_folder,"cam")))
+    if (dataset == "tnt"):
+        num_views -= 3
     print("Number of views:", num_views)
 
     # probability filtering
