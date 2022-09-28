@@ -1,7 +1,7 @@
 #!/bin/bash
 
-#DATASET=training
-DATASET=intermediate
+DATASET=training
+#DATASET=intermediate
 #DATASET=advanced
 
 DATASET_ROOT="/media/nate/Data/TNT/${DATASET}/"
