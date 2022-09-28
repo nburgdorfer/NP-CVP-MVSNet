@@ -22,14 +22,14 @@ CUDA_VISIBLE_DEVICES=0 python eval.py \
 --depth_h=1152 \
 --depth_w=1600 \
 --vselection="mvsnet" \
---nsrc=10 \
+--nsrc=4 \
 --nbadsrc=0 \
 --nscale=4 \
 --gtdepth=1 \
---eval_precision=32 \
+--eval_precision=16 \
 --feature_ch 8 16 32 64 \
 --gwc_groups 2 4 4 8 \
---target_d 8 16 32 48 \
+--target_d 8 16 32 96 \
 \
 --init_search_mode='uniform' \
 --costmetric='gwc_weighted_sum' \

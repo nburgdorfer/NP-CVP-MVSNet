@@ -1,5 +1,9 @@
 #!/bin/bash
-DATASET=training
+
+#DATASET=training
+DATASET=intermediate
+#DATASET=advanced
+
 DATASET_ROOT="/media/nate/Data/TNT/${DATASET}/"
 
 # Task name
@@ -31,7 +35,7 @@ CUDA_VISIBLE_DEVICES=0 python eval.py \
 --eval_precision=32 \
 --feature_ch 8 16 32 64 \
 --gwc_groups 2 4 4 8 \
---target_d 8 16 32 48 \
+--target_d 8 16 32 96 \
 \
 --init_search_mode='uniform' \
 --costmetric='gwc_weighted_sum' \

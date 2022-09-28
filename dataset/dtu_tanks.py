@@ -58,6 +58,7 @@ class MVSDataset(Dataset):
         meta = self.metas[idx]
         scan, ref_view, src_views = meta
 
+        print(self.args.nsrc, src_views)
         assert self.args.nsrc <= len(src_views)
 
         src_idx_list = []
