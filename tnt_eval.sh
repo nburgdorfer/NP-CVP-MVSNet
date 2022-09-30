@@ -1,7 +1,7 @@
 #!/bin/bash
 
-DATASET=training
-#DATASET=intermediate
+#DATASET=training
+DATASET=intermediate
 #DATASET=advanced
 
 #TRAINING_SET=dtu
