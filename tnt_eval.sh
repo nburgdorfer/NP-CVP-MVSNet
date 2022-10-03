@@ -4,8 +4,8 @@
 DATASET=intermediate
 #DATASET=advanced
 
-#TRAINING_SET=dtu
-TRAINING_SET=blended_mvs
+TRAINING_SET=dtu
+#TRAINING_SET=blended_mvs
 
 DATASET_ROOT="/media/nate/Data/TNT/${DATASET}/"
 
@@ -33,12 +33,12 @@ CUDA_VISIBLE_DEVICES=0 python eval.py \
 --vselection="mvsnet" \
 --nsrc=10 \
 --nbadsrc=0 \
---nscale=3 \
+--nscale=4 \
 --gtdepth=1 \
---eval_precision=32 \
---feature_ch 8 16 32 \
---gwc_groups 2 4 8 \
---target_d 8 16 48 \
+--eval_precision=16 \
+--feature_ch 8 16 32 64 \
+--gwc_groups 2 4 4 8 \
+--target_d 8 16 32 96 \
 \
 --init_search_mode='uniform' \
 --costmetric='gwc_weighted_sum' \
