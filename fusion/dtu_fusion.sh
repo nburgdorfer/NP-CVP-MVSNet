@@ -53,7 +53,7 @@ do
 	SCAN_DIR="scan${PADDED_SCAN_NUM}/"
 	PC_FILE_NAME=${METHOD}${PADDED_SCAN_NUM}_l3.ply
 
-	fusion $SCAN_DIR 0.5 3
+	fusion $SCAN_DIR 0.1 2
 done
 
 # run evaluation

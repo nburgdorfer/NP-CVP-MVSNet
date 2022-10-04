@@ -163,7 +163,8 @@ def mvsnet_to_gipuma(scan_folder, scan, dtu_test_root, gipuma_point_folder,image
         sub_depth_folder = os.path.join(gipuma_point_folder, gipuma_prefix+"{:08d}".format(view))
         if not os.path.isdir(sub_depth_folder):
             os.mkdir(sub_depth_folder)
-        in_depth_pfm = os.path.join(depth_folder, "{:08d}_prob_filtered.pfm".format(view))
+        #in_depth_pfm = os.path.join(depth_folder, "{:08d}_prob_filtered.pfm".format(view))
+        in_depth_pfm = os.path.join(depth_folder, "{:08d}.pfm".format(view))
         out_depth_dmb = os.path.join(sub_depth_folder, 'disp.dmb')
         fake_normal_dmb = os.path.join(sub_depth_folder, 'normals.dmb')
         mvsnet_to_gipuma_dmb(in_depth_pfm, out_depth_dmb)
@@ -256,7 +257,7 @@ if __name__ == '__main__':
 
     # probability filtering
     print ('filter depth map with probability map')
-    probability_filter(scan_folder, prob_threshold, num_views)
+    #probability_filter(scan_folder, prob_threshold, num_views)
 
     # convert to gipuma format
     print ('Convert mvsnet output to gipuma input')
