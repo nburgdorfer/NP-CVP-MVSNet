@@ -26,6 +26,7 @@ def getArgsParser():
     parser.add_argument('--nbadsrc', type=int, default=0, help='number of src views that are intended to be far away from current view')
     parser.add_argument('--random_src', type=int, default=0, help='number of src views that are randomly sampled from all possible views.')
     parser.add_argument('--nscale', type=int, default=5, help='number of scales to use')
+    parser.add_argument('--scale_f', type=int, default=8, help='upsampling scale factor')
     parser.add_argument('--gtdepth', type=int, default=1, help='require ground truth depth')
     parser.add_argument('--refine_gwc_groups', type=int, default=4, help='number of groups for gwc')
     parser.add_argument('--min_depth', type=float, default=-1, help='override min depth')

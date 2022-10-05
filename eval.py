@@ -137,7 +137,7 @@ def save_depth():
             maximum_prob, max_prob_idx = init_prob.max(dim=2)
             prob_volume_sum4 = 4 * F.avg_pool3d(F.pad(init_prob, pad=(0, 0, 0, 0, 1, 2)), (4, 1, 1), stride=1, padding=0).squeeze(1)
             max_sum4_prob, _ = prob_volume_sum4.max(dim=1)
-            max_sum4_prob = torch.nn.functional.interpolate(max_sum4_prob.unsqueeze(1),scale_factor=8,mode='bilinear',align_corners=False).squeeze(1)
+            max_sum4_prob = torch.nn.functional.interpolate(max_sum4_prob.unsqueeze(1),scale_factor=args.scale_f,mode='bilinear',align_corners=False).squeeze(1)
 
             # Final depth regression
             B,_,D,H,W = prob_grids[0].shape

@@ -3,10 +3,13 @@
 DATASET=training
 #DATASET=intermediate
 
+TRAINING_SET=dtu
+#TRAINING_SET=blended_mvs
+
 TNT_TEST_ROOT="/media/Data/nate/TNT/${DATASET}/"
 COLMAP_DIR=/media/Data/nate/TNT/colmap/
-DEPTH_FOLDER="/media/Data/nate/Results/NP-CVP-MVSNet/tnt/Output_${DATASET}/"
-OUT_FOLDER="/media/Data/nate/Results/NP-CVP-MVSNet/tnt/Output_${DATASET}_fused/"
+DEPTH_FOLDER="/media/Data/nate/Results/NP-CVP-MVSNet/tnt/Output_${DATASET}_${TRAINING_SET}/"
+OUT_FOLDER="/media/Data/nate/Results/NP-CVP-MVSNet/tnt/Output_${DATASET}_${TRAINING_SET}_fused/"
 FUSIBILE_EXE_PATH="./fusibile"
 SCENE_LIST=../dataset/tnt/${DATASET}_list.txt
 EVAL_CODE_DIR=/media/Data/nate/Evaluation/tnt/TanksAndTemples/python_toolbox/evaluation/
@@ -57,15 +60,17 @@ evaluate() {
 			--ply-path ${PLY}
 }
 
-
 SCENES=(Barn Caterpillar Ignatius Truck)
-DISP_TH=(0.25 0.18 0.25 0.35)
-NUM_CONSIST=(6 10 4 4)
+DISP_TH=(0.35 0.20 0.55 0.30)
+NUM_CONSIST=(3 6 2 3)
 i=0
 
 for SCENE in ${SCENES[@]}
 do
+	echo "Working on scene ${SCENE} ($i)"
 	fusion ${SCENE} ${DISP_TH[$i]} ${NUM_CONSIST[$i]}
     evaluate $SCENE ${OUT_FOLDER}${SCENE}/consistencyCheck/final3d_model.ply &
 	wait
+
+	let i=$i+1
 done
