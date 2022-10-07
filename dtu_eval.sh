@@ -1,7 +1,7 @@
-DATASET_ROOT="/media/nate/Data/DTU/"
+DATASET_ROOT="/media/Data/nate/DTU/"
 
 # Task name
-CKPT_DIR=/media/nate/Data/MVS/NP-CVP-MVSNet/dtu/models/
+CKPT_DIR=/media/nate/Data/MVS/NP-CVP-MVSNet/models/dtu/
 CKPT_NAME="model_000006.ckpt"
 
 # Checkpoint
