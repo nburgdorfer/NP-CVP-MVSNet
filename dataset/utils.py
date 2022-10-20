@@ -100,7 +100,7 @@ def read_cam_file(filename):
     intrinsics = np.fromstring(' '.join(lines[7:10]), dtype=np.float32, sep=' ').reshape((3, 3))
     depth_min = float(lines[11].split()[0])
     depth_interval = float(lines[11].split()[1])
-    depth_max = depth_min + (depth_interval * 773)
+    depth_max = depth_min + (depth_interval * 256)
     return intrinsics, extrinsics, depth_min, depth_max
 
 def read_cam_file_with_size(filename,imgsize):
@@ -122,7 +122,7 @@ def read_cam_file_with_size(filename,imgsize):
 
     depth_min = float(lines[11].split()[0])
     depth_interval = float(lines[11].split()[1])
-    depth_max = depth_min + (depth_interval * 773)
+    depth_max = depth_min + (depth_interval * 256)
     return intrinsics, extrinsics, depth_min, depth_max
 
 def write_cam(filename, intrinsic, extrinsic, depth_min, depth_max):
