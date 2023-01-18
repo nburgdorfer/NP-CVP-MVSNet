@@ -7,17 +7,17 @@ DATASET=intermediate
 TRAINING_SET=dtu
 #TRAINING_SET=blended_mvs
 
-DATASET_ROOT="/media/Data/nate/TNT/${DATASET}/"
+DATASET_ROOT="/media/nate/Data/TNT/${DATASET}/"
 
 # Task name
-CKPT_DIR=/media/Data/nate/MVS/NP-CVP-MVSNet/models/${TRAINING_SET}/
+CKPT_DIR=/media/nate/Data/MVS/NP-CVP-MVSNet/models/${TRAINING_SET}/
 CKPT_NAME="model.ckpt"
 
 # Checkpoint
 LOAD_CKPT_DIR="${CKPT_DIR}${CKPT_NAME}"
 
 # Output dir
-OUT_DIR=/media/Data/nate/Results/NP-CVP-MVSNet/tnt/Output_${DATASET}_${TRAINING_SET}/
+OUT_DIR=/media/nate/Data/Results/NP-CVP-MVSNet/tnt/Output_${DATASET}_${TRAINING_SET}/
 
 CUDA_VISIBLE_DEVICES=0 python eval.py \
 \
