@@ -1,18 +1,19 @@
 set -x; set -e;
 
 TASK_NAME="np-cvp-mvsnet"
-DTU_HIGHRES_TRAIN_PATH="/media/nate/Data/DTU/"
+DTU_HIGHRES_TRAIN_PATH="/media/Data/nate/DTU/"
 
 CKPT_DIR="./ckpts/"
 mkdir -p $CKPT_DIR
 
-python3 -m torch.distributed.launch --nnodes 1 --node_rank 0 --nproc_per_node 1 ddp_amp_train.py \
+python -m torch.distributed.launch --nnodes 1 --node_rank 0 --nproc_per_node 1 train.py \
 \
 --info="${TASK_NAME}" \
 --mode="train" \
 \
 --dataset=dtu \
 --dataset_root=$DTU_HIGHRES_TRAIN_PATH \
+--scene_list=./dataset/dtu/scan_list_train.txt \
 --imgsize=512 \
 --vselection="mvsnet" \
 --nsrc=2 \
@@ -30,7 +31,7 @@ python3 -m torch.distributed.launch --nnodes 1 --node_rank 0 --nproc_per_node 1 
 --lr=0.001 \
 --lrepochs="10,12,14,20:2" \
 --wd=0.0 \
---batch_size=1 \
+--batch_size=2 \
 --summary_freq=1 \
 --save_freq=1 \
 --seed=1 \

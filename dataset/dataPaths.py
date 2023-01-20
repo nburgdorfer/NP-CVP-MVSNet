@@ -29,8 +29,9 @@ def getPairListFileTNT(data_root,mode,scan,selection="next"):
     return pair_list_file
 
 def getDepthFile(data_root,mode,scan,view):
-    depth_name = "depth_map_"+str(view).zfill(4)+".pfm"
-    scan_path = "Depths/"+scan+"_train/"
+    depth_name = "{}_depth.pfm".format(str(view).zfill(8))
+    #scan_path = "Depths/"+scan+"_train/"
+    scan_path = "GT_Depths/"+scan+"/"
     depth_file = os.path.join(data_root,scan_path,depth_name)
     return depth_file
 

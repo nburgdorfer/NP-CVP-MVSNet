@@ -116,9 +116,13 @@ def read_cam_file_with_size(filename,imgsize):
         intrinsics[1,2] -= 28
 
     else:
-        if imgsize not in [128,256,512,1024]:
-            intrinsice_down_factor = 1200/imgsize
-            intrinsics[:2, :] /= intrinsice_down_factor
+        if imgsize in [128,256,512,1024]:
+            intrinsic_down_factor_x = 1600/((5/4)*imgsize)
+            intrinsic_down_factor_y = 1200/imgsize
+            intrinsics[0, 0] /= intrinsic_down_factor_x
+            intrinsics[0, 2] /= intrinsic_down_factor_x
+            intrinsics[1, 1] /= intrinsic_down_factor_y
+            intrinsics[1, 2] /= intrinsic_down_factor_y
 
     depth_min = float(lines[11].split()[0])
     depth_interval = float(lines[11].split()[1])

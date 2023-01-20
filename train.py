@@ -13,7 +13,7 @@ import torch.backends.cudnn as cudnn
 import torch.optim as optim
 from torch.utils.data import DataLoader
 from dataset import dtu_generic
-from dataset import blendedmvs
+#from dataset import blendedmvs
 from models import net
 from models.modules import getWhiteMask
 from utils import *
@@ -74,7 +74,7 @@ elif args.dataset == 'blendedmvspp':
     train_dataset = blendedmvs.MVSDataset(args)
 
 train_sampler = torch.utils.data.distributed.DistributedSampler(train_dataset)
-train_loader = DataLoader(train_dataset, args.batch_size, num_workers=4, drop_last=False, sampler=train_sampler, pin_memory=True)
+train_loader = DataLoader(train_dataset, args.batch_size, num_workers=10, drop_last=False, sampler=train_sampler, pin_memory=True)
 
 # Network
 model = net.network(args)
@@ -157,8 +157,8 @@ def train():
 
         for batch_idx, sample in enumerate(train_loader):
 
-            if batch_idx > 30:
-                break
+            #   if batch_idx > 30:
+            #       break
 
             start_time = time.time()
             global_step = len(train_loader) * epoch_idx + batch_idx
