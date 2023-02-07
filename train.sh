@@ -40,5 +40,7 @@ python -m torch.distributed.launch --nnodes 1 --node_rank 0 --nproc_per_node 1 t
 --final_edge_mask=1 \
 --final_weight=0.1 \
 --final_continue=1 \
+--loadckpt="ckpts/np-cvp-mvsnet/model_000006.ckpt" \
+--resume=1 \
 \
 --logckptdir=$CKPT_DIR
